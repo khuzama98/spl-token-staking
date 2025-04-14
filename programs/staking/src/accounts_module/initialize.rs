@@ -11,6 +11,10 @@ pub struct Initialize<'info> {
     #[account(seeds = [b"vault_authority"], bump)]
     pub vault_authority: AccountInfo<'info>,
     
+    /// CHECK:
+    #[account(seeds = [b"reward_pool_authority"], bump)]
+    pub reward_pool_authority: AccountInfo<'info>,
+    
     pub mint: Account<'info, Mint>,
     
     #[account(
@@ -31,6 +35,16 @@ pub struct Initialize<'info> {
         bump
     )]
     pub vault: Account<'info, TokenAccount>,
+    
+    #[account(
+        init,
+        payer = admin,
+        seeds = [b"reward_pool"],
+        token::mint = mint,
+        token::authority = reward_pool_authority,
+        bump
+    )]
+    pub reward_pool: Account<'info, TokenAccount>,
     
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,

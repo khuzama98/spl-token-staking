@@ -15,4 +15,12 @@ pub mod staking {
     pub fn stake(ctx: Context<Stake<'_>>, amount: u64) -> Result<()> {
         instructions::stake::handler(ctx, amount)
     }
+
+    pub fn unstake(ctx: Context<Unstake<'_>>, amount: u64) -> Result<()> {
+        instructions::unstake::handler(ctx, amount)
+    }
+
+    pub fn claim(ctx: Context<Claim<'_>>) -> Result<()> {
+        instructions::claim::handler(ctx)
+    }
 }
