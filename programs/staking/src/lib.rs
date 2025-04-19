@@ -6,6 +6,8 @@ pub mod state;
 
 #[program]
 pub mod staking {
+    use accounts_module::add_rewards::AddRewards;
+
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize<'_>>) -> Result<()> {
@@ -22,5 +24,9 @@ pub mod staking {
 
     pub fn claim(ctx: Context<Claim<'_>>) -> Result<()> {
         instructions::claim::handler(ctx)
+    }
+
+    pub fn add_rewards(ctx: Context<AddRewards<'_>>, amount: u64, reward_rate: u64) -> Result<()> {
+        instructions::add_rewards::handler(ctx, amount, reward_rate)
     }
 }
