@@ -1,16 +1,18 @@
 use anchor_lang::prelude::*;
-use crate::state::{global_state::GlobalState, staker::Staker};
+use anchor_spl::token::{Token, TokenAccount};
+use crate::state::global_state::GlobalState;
 
 #[derive(Accounts)]
-pub struct Claim<'info> {
+pub struct AddRewards<'info> {
     #[account(mut)]
-    pub signer: Signer<'info>,
-    #[account(mut, seeds = [b"staker", signer.key().as_ref()], bump)]
-    pub staker: Account<'info, Staker>,
+    pub admin: Signer<'info>,
     #[account(mut, seeds = [b"global_state"], bump)]
     pub global_state: Account<'info, GlobalState>,
     #[account(mut, seeds = [b"reward_pool"], bump)]
-    pub reward_pool: Account<'info, TokenAccount>, // Reward pool account
+    pub reward_pool: Account<'info, TokenAccount>,
+
+
+    /// CHECK: This account is used as a PDA authority for the reward pool.
     #[account(seeds = [b"reward_pool_authority"], bump)]
     pub reward_pool_authority: AccountInfo<'info>,
     pub token_program: Program<'info, Token>,

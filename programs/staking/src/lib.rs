@@ -1,32 +1,35 @@
 use anchor_lang::prelude::*;
-
+pub mod accounts_context;
+pub mod error;
 pub mod instructions;
-pub mod accounts_module;
 pub mod state;
+
+use crate::accounts_context::*;
+
+declare_id!("9hYMXR4N5aVhNaAgsmqZM6E6LSSaRDWVJ4tGbuBMMrRP");
 
 #[program]
 pub mod staking {
-    use accounts_module::add_rewards::AddRewards;
 
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize<'_>>) -> Result<()> {
-        instructions::initialize::handler(ctx)
+    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        crate::instructions::initialize::handler(ctx)
     }
 
-    pub fn stake(ctx: Context<Stake<'_>>, amount: u64) -> Result<()> {
-        instructions::stake::handler(ctx, amount)
+    pub fn stake(ctx: Context<Stake>, amount: u64) -> Result<()> {
+        crate::instructions::stake::handler(ctx, amount)
     }
 
-    pub fn unstake(ctx: Context<Unstake<'_>>, amount: u64) -> Result<()> {
-        instructions::unstake::handler(ctx, amount)
+    pub fn unstake(ctx: Context<Unstake>, amount: u64) -> Result<()> {
+        crate::instructions::unstake::handler(ctx, amount)
     }
 
-    pub fn claim(ctx: Context<Claim<'_>>) -> Result<()> {
-        instructions::claim::handler(ctx)
+    pub fn claim(ctx: Context<Claim>) -> Result<()> {
+        crate::instructions::claim::handler(ctx)
     }
 
-    pub fn add_rewards(ctx: Context<AddRewards<'_>>, amount: u64, reward_rate: u64) -> Result<()> {
-        instructions::add_rewards::handler(ctx, amount, reward_rate)
+    pub fn add_rewards(ctx: Context<AddRewards>, amount: u64, reward_rate: u64) -> Result<()> {
+        crate::instructions::add_rewards::handler(ctx, amount, reward_rate)
     }
 }

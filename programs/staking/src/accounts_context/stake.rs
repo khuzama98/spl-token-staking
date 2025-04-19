@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Token, TokenAccount};
 use crate::state::{global_state::GlobalState, staker::Staker};
+use core::mem::size_of;
 
 #[derive(Accounts)]
 pub struct Stake<'info> {

@@ -1,6 +1,6 @@
+use crate::accounts_context::stake::Stake;
 use anchor_lang::prelude::*;
-use anchor_spl::token::Transfer;
-use crate::accounts_module::stake::Stake;
+use anchor_spl::token::{transfer, Transfer};
 
 pub fn handler(ctx: Context<Stake<'_>>, amount: u64) -> Result<()> {
     let staker = &mut ctx.accounts.staker;
@@ -18,7 +18,7 @@ pub fn handler(ctx: Context<Stake<'_>>, amount: u64) -> Result<()> {
         },
     );
 
-    anchor_spl::token::transfer(cpi_ctx, amount)?;
+    transfer(cpi_ctx, amount)?;
 
     staker.staked_amount += amount;
     global_state.total_staked += amount;

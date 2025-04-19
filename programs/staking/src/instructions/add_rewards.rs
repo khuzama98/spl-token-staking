@@ -1,5 +1,6 @@
+use crate::accounts_context::add_rewards::AddRewards;
 use anchor_lang::prelude::*;
-use crate::accounts_module::add_rewards::AddRewards;
+use anchor_spl::token::{transfer, Transfer};
 
 pub fn handler(ctx: Context<AddRewards<'_>>, amount: u64, reward_rate: u64) -> Result<()> {
     let seeds: &[&[u8]] = &[b"reward_pool_authority", &[ctx.bumps.reward_pool_authority]];
@@ -15,7 +16,7 @@ pub fn handler(ctx: Context<AddRewards<'_>>, amount: u64, reward_rate: u64) -> R
         signer_seeds,
     );
 
-    anchor_spl::token::transfer(cpi_ctx, amount)?;
+    transfer(cpi_ctx, amount)?;
 
     ctx.accounts.global_state.reward_pool += amount;
     ctx.accounts.global_state.reward_rate = reward_rate;
